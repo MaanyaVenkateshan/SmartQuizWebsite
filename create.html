@@ -1,0 +1,116 @@
+<html>
+<head>
+<style>
+  body {
+    font-family: Verdana, sans-serif;
+  }
+  .quiz {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 5px;
+    border: 2px;
+    border-radius: 5px;
+    background-color: lightcyan;
+  }
+  .question {
+    margin-bottom: 20px;
+  }
+  .options {
+    list-style-type: none;
+    padding: 20px;
+  }
+  .options li {
+    margin-bottom: 10px;
+  }
+  input[type="text"] {
+    padding: 10px;
+    width: 90%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: black;
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz">
+  <h2>Create Your Quiz</h2>
+  <form id="quizform">
+    <div id="questions">
+    </div>
+    <button type="button" id="button">Add Question</button>
+    <button type="submit">Finish</button>
+  </form>
+</div>
+
+<script>
+  const questionsContainer = document.getElementById('questions');
+  const addQuestionBtn = document.getElementById('button');
+
+  let questionCount = 1;
+
+  addQuestionBtn.addEventListener('click', function() {
+    const newQuestionDiv = document.createElement('div');
+    newQuestionDiv.classList.add('question');
+    newQuestionDiv.innerHTML = `
+      <label for="question${questionCount}">Question ${questionCount}:</label>
+      <input type="text" id="question${questionCount}" name="question${questionCount}" required>
+      <ul id="options${questionCount}" class="options">
+        <li><input type="text" name="q${questionCount}" required><button type="button" class="addoption">+</button></li>
+      </ul>
+    `;
+    questionsContainer.appendChild(newQuestionDiv);
+    questionCount++;
+  });
+
+  questionsContainer.addEventListener('click', function(event) {
+    if (event.target.classList.contains('addoption')) {
+      const questionIndex = event.target.parentElement.parentElement.id.replace('options', '');
+      const optionsList = document.getElementById(`options${questionIndex}`);
+      const newOptionLi = document.createElement('li');
+      newOptionLi.innerHTML = `<input type="text" name="q${questionIndex}" required><button type="button" class="removeoption">-</button>`;
+      optionsList.appendChild(newOptionLi);
+    } else if (event.target.classList.contains('removeoption')) {
+      event.target.parentElement.remove();
+    }
+  });
+
+  document.getElementById('quizform').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Collecting user input
+    const questions = [];
+    for (let i = 1; i < questionCount; i++) {
+      const question = document.getElementById(`question${i}`).value;
+      const options = [];
+      const optionInputs = document.querySelectorAll(`#options${i} input`);
+      optionInputs.forEach(input => {
+        options.push(input.value);
+      });
+      questions.push({ question, options });
+    }
+
+    // Displaying user-created quiz (you can modify this to store the quiz data in a database, etc.)
+    console.log("User's Quiz:");
+    questions.forEach((q, index) => {
+      console.log(`Question ${index + 1}: ${q.question}`);
+      q.options.forEach((option, optionIndex) => {
+        console.log(`Option ${optionIndex + 1}: ${option}`);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

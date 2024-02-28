@@ -1,0 +1,108 @@
+<html>
+<style>
+  body {
+    font-family: Verdana, sans-serif;
+  }
+  .quiz {
+    max-width: 1000px;
+	max-height: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 10px;
+    border-radius: 15px;
+    background-color: lightcyan;
+  }
+  .question {
+    margin-bottom: 10px;
+  }
+  .options {
+    list-style-type: none;
+    padding: 1px;
+  }
+  .options li {
+    margin-bottom: 1px;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: black;
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz">
+  <h2>Quiz</h2>
+  <form id="quizform">
+    <div class="question">
+      <p>1.Google is a Browser or a Search Engine?</p>
+      <ul class="options">
+        <li><label><input type="radio" name="q1" value="Browser"> Browser</label></li>
+        <li><label><input type="radio" name="q1" value="Search Engine"> Search Engine</label></li>
+        <li><label><input type="radio" name="q1" value="Neither Browser nor Search Engine"> Neither Browser nor Search Engine</label></li>
+		 <li><label><input type="radio" name="q1" value="Both Browser and Search Engine"> Both Browser and Search Engine</label></li>
+      </ul>
+    </div>
+    <div class="question">
+      <p>2.How many Bits make one Byte?</p>
+      <ul class="options">
+        <li><label><input type="radio" name="q2" value="16 bits">16 bits</label></li>
+        <li><label><input type="radio" name="q2" value="32 bits">32 bits</label></li>
+        <li><label><input type="radio" name="q2" value="64 bits">64 bits</label></li>
+		<li><label><input type="radio" name="q2" value="8 bits">8 bits</label></li>
+      </ul>
+    </div>
+	<div class="question">
+      <p>3.The process of transferring files from the Internet to your computer is called?</p>
+      <ul class="options">
+        <li><label><input type="radio" name="q3" value="Downloading">Downloading</label></li>
+        <li><label><input type="radio" name="q3" value="Uploading">Uploading</label></li>
+        <li><label><input type="radio" name="q3" value="Storing">Storing</label></li>
+		<li><label><input type="radio" name="q3" value="All the above">All the above</label></li>
+      </ul>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <div id="result"></div>
+</div>
+<script>
+  document.getElementById('quizform').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+   
+    const answers = {
+      q1: document.querySelector('input[name="q1"]:checked').value,
+      q2: document.querySelector('input[name="q2"]:checked').value,
+	  q3: document.querySelector('input[name="q1"]:checked').value
+    };
+
+    const correctAnswers = {
+      q1: 'Search Engine',
+      q2: '8 bits',
+	  q3: 'Downloading'
+    };
+
+   
+    const totalMarks = Object.keys(correctAnswers).length;
+
+    let score = 0;
+    for (const question in answers) {
+      if (answers[question] === correctAnswers[question]) {
+        score++;
+      }
+    }
+
+  
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = `Congratulations,You scored ${score} on ${totalMarks}.`;
+  });
+</script>
+
+</body>
+</html>
